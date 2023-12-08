@@ -59,28 +59,28 @@ def main():
             with open(f"{store_name}.pkl", "rb") as f:
                 VectorStore = pickle.load(f)
             st.write('Embeddings Loaded from the Disk')
-        #else:
-            # embeddings = OpenAIEmbeddings()
-            # VectorStore = FAISS.from_texts(chunks, embedding=embeddings)
-            # with open(f"{store_name}.pkl", "wb") as f:
-            #     pickle.dump(VectorStore, f)
+        else:
+            embeddings = OpenAIEmbeddings()
+            VectorStore = FAISS.from_texts(chunks, embedding=embeddings)
+            with open(f"{store_name}.pkl", "wb") as f:
+                pickle.dump(VectorStore, f)
  
-        # embeddings = OpenAIEmbeddings()
-        # VectorStore = FAISS.from_texts(chunks, embedding=embeddings)
+        embeddings = OpenAIEmbeddings()
+        VectorStore = FAISS.from_texts(chunks, embedding=embeddings)
  
-        # # Accept user questions/query
-        # query = st.text_input("Ask questions about your PDF file:")
-        # st.write(query)
+        # Accept user questions/query
+        query = st.text_input("Ask questions about your PDF file:")
+        st.write(query)
  
-        # if query:
-        #     docs = VectorStore.similarity_search(query=query, k=3)
+        if query:
+            docs = VectorStore.similarity_search(query=query, k=3)
  
-        #     llm = OpenAI()
-        #     chain = load_qa_chain(llm=llm, chain_type="stuff")
-        #     with get_openai_callback() as cb:
-        #         response = chain.run(input_documents=docs, question=query)
-        #         print(cb)
-        #     st.write(response)
+            llm = OpenAI()
+            chain = load_qa_chain(llm=llm, chain_type="stuff")
+            with get_openai_callback() as cb:
+                response = chain.run(input_documents=docs, question=query)
+                print(cb)
+            st.write(response)
  
 if __name__ == '__main__':
     main()
